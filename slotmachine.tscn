@@ -1,0 +1,154 @@
+[gd_scene load_steps=15 format=3 uid="uid://cciagufbw2ahh"]
+
+[ext_resource type="PackedScene" uid="uid://bb2g407ekolaa" path="res://models/slotmachione.glb" id="1_08tyf"]
+[ext_resource type="Shader" path="res://slotmachine.gdshader" id="2_gmqs7"]
+[ext_resource type="Script" path="res://models/Slot.cs" id="2_lwmvc"]
+[ext_resource type="Texture2D" uid="uid://d0fq45urphxxi" path="res://models/slotmachione_slotmachine_base.png" id="3_ciyhx"]
+[ext_resource type="Texture2D" uid="uid://cxd147h44g43y" path="res://models/environment.png" id="4_lixiu"]
+[ext_resource type="Texture2D" uid="uid://4pb5okhh1p2k" path="res://models/slotmachione_metallic.png" id="5_k0qac"]
+[ext_resource type="Script" path="res://SlotmachineAnimation.cs" id="6_l3pxo"]
+[ext_resource type="Script" path="res://Camera3D2.cs" id="8_e08xx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_epvfv"]
+render_priority = 0
+shader = ExtResource("2_gmqs7")
+shader_parameter/offset = null
+shader_parameter/start = null
+shader_parameter/timer = null
+shader_parameter/timescale = null
+shader_parameter/environment = ExtResource("4_lixiu")
+shader_parameter/diffuse = ExtResource("3_ciyhx")
+shader_parameter/metallic = ExtResource("5_k0qac")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tcnf5"]
+render_priority = 0
+shader = ExtResource("2_gmqs7")
+shader_parameter/offset = null
+shader_parameter/start = null
+shader_parameter/timer = null
+shader_parameter/timescale = null
+shader_parameter/environment = ExtResource("4_lixiu")
+shader_parameter/diffuse = ExtResource("3_ciyhx")
+shader_parameter/metallic = ExtResource("5_k0qac")
+
+[sub_resource type="Shader" id="Shader_qo6jj"]
+code = "shader_type spatial;
+render_mode unshaded;
+uniform sampler2D environment : filter_linear;
+uniform sampler2D diffuse : filter_linear;
+uniform sampler2D metallic : filter_linear;
+uniform float offset;
+uniform float initialoffset;
+uniform float start;
+uniform float resettime;
+uniform float timer;
+uniform float timescale;
+const float offsethelper = 0.0625;
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+float random (vec2 uv) {
+    return fract(sin(dot(uv.xy,
+        vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+vec2 generate_matcap_uv(vec3 _normal, vec3 _node_position_view) {
+	vec3 cross_space = cross(normalize(_node_position_view), _normal); // cross products the normal with it's base position
+	vec2 mat_space = vec2(cross_space.y * 1.0, cross_space.x); // converts to a Vec2 UV, having to switch x and y
+	mat_space *= vec2(-0.5, -0.5); // modifies the mat space's size to fit into uv coords, & flips it
+	mat_space += vec2(0.5, 0.5); // transforms the mat space into uv coords
+	return mat_space; // export the final uv's
+}
+
+void fragment(){
+	float time = min(1.0,max(TIME - start - resettime,0.0)/timescale);
+	vec2 uv = UV + vec2(mix(initialoffset ,offset,smoothstep(0.0,1.0,time)) * offsethelper,0.0);
+	vec2 rnd = vec2(random(UV),random(UV* 2.0));
+	vec2 matcap_uv = (generate_matcap_uv(NORMAL, NODE_POSITION_VIEW)); // Matcap UV's
+		matcap_uv = matcap_uv * 0.5 + 0.25 + rnd* 0.005;
+	vec3 _matcap = texture(environment, matcap_uv).rgb; // Matcap Texture
+	float met = texture(metallic,uv + rnd * 0.0006).r;
+	vec3 diff = texture(diffuse,uv + rnd * 0.0006).xyz;
+	ALBEDO = pow(2.0 *diff * _matcap * met + diff * (1.01 - met),vec3(2.5));
+	//ALBEDO = vec3(matcap_uv,1.0);
+}
+
+//void light() {
+	// Called for every pixel for every light affecting the material.
+	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gubwt"]
+render_priority = 0
+shader = SubResource("Shader_qo6jj")
+shader_parameter/offset = 1.0
+shader_parameter/initialoffset = -1.0
+shader_parameter/start = 0.8
+shader_parameter/resettime = null
+shader_parameter/timer = null
+shader_parameter/timescale = 1.6
+shader_parameter/environment = ExtResource("4_lixiu")
+shader_parameter/diffuse = ExtResource("3_ciyhx")
+shader_parameter/metallic = ExtResource("5_k0qac")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yb7qk"]
+render_priority = 0
+shader = SubResource("Shader_qo6jj")
+shader_parameter/offset = 2.0
+shader_parameter/initialoffset = -2.0
+shader_parameter/start = 0.8
+shader_parameter/resettime = null
+shader_parameter/timer = null
+shader_parameter/timescale = 2.6
+shader_parameter/environment = ExtResource("4_lixiu")
+shader_parameter/diffuse = ExtResource("3_ciyhx")
+shader_parameter/metallic = ExtResource("5_k0qac")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x5lfc"]
+render_priority = 0
+shader = SubResource("Shader_qo6jj")
+shader_parameter/offset = 3.0
+shader_parameter/initialoffset = -3.0
+shader_parameter/start = 0.8
+shader_parameter/resettime = null
+shader_parameter/timer = null
+shader_parameter/timescale = 3.2
+shader_parameter/environment = ExtResource("4_lixiu")
+shader_parameter/diffuse = ExtResource("3_ciyhx")
+shader_parameter/metallic = ExtResource("5_k0qac")
+
+[node name="Slotmachine" type="Node3D"]
+
+[node name="slotmachione" parent="." instance=ExtResource("1_08tyf")]
+script = ExtResource("2_lwmvc")
+
+[node name="Icosphere_lp" parent="slotmachione" index="0"]
+material_override = SubResource("ShaderMaterial_epvfv")
+
+[node name="Cube" parent="slotmachione" index="1"]
+transform = Transform3D(1, -0.000410397, 0, 0.000410397, 1, 0, 0, 0, 1, -0.0445547, 0.371314, -0.754129)
+material_override = SubResource("ShaderMaterial_tcnf5")
+
+[node name="Cylinder_001" parent="slotmachione" index="2"]
+transform = Transform3D(0.0408111, -1.61137e-07, -0.999167, -0.999167, -4.3675e-08, -0.0408111, -3.70624e-08, 1, -1.62785e-07, 0, 0.312924, 0)
+material_override = SubResource("ShaderMaterial_gubwt")
+
+[node name="Cylinder_002" parent="slotmachione" index="3"]
+transform = Transform3D(0.0323177, -1.57655e-07, -0.999477, -0.999477, -1.62836e-07, -0.0323177, -1.57655e-07, 1, -1.62836e-07, 0, 0.312924, -0.386852)
+material_override = SubResource("ShaderMaterial_yb7qk")
+
+[node name="Cylinder_003" parent="slotmachione" index="4"]
+transform = Transform3D(0.975913, -1.05286e-09, -0.218159, -0.218159, -9.53602e-09, -0.975913, -1.05286e-09, 1, -9.53602e-09, 0, 0.312924, -0.772022)
+material_override = SubResource("ShaderMaterial_x5lfc")
+
+[node name="AnimationPlayer" parent="slotmachione" index="5"]
+autoplay = "Scene"
+script = ExtResource("6_l3pxo")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.35771e-08, -0.0783199, 0.996928, -3.42347e-09, 0.996928, 0.0783199, -1, 2.22045e-16, -4.37114e-08, 3.0888, 0.543042, 0)
+script = ExtResource("8_e08xx")
+
+[editable path="slotmachione"]

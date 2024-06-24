@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://gtv5f1gn717m"]
+
+[ext_resource type="Script" path="res://code/roller.cs" id="1_b4je0"]
+[ext_resource type="Texture2D" uid="uid://blmjbhgo3p4n3" path="res://images/menuRoller.png" id="2_e5ice"]
+[ext_resource type="Script" path="res://code/MenuRevolver.cs" id="3_84ecd"]
+[ext_resource type="ArrayMesh" uid="uid://bdcigh8t1bapt" path="res://models/menu revolver.obj" id="3_e0xig"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_brgxl"]
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("2_e5ice")
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_b4je0")
+
+[node name="MenuRevolver" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_brgxl")
+mesh = ExtResource("3_e0xig")
+script = ExtResource("3_84ecd")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.99976, 0, 0)
