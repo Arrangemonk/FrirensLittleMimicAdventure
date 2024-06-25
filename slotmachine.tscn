@@ -1,13 +1,13 @@
 [gd_scene load_steps=15 format=3 uid="uid://cciagufbw2ahh"]
 
 [ext_resource type="PackedScene" uid="uid://bb2g407ekolaa" path="res://models/slotmachione.glb" id="1_08tyf"]
-[ext_resource type="Shader" path="res://slotmachine.gdshader" id="2_gmqs7"]
-[ext_resource type="Script" path="res://models/Slot.cs" id="2_lwmvc"]
+[ext_resource type="Shader" path="res://shaders/slotmachine.gdshader" id="2_gmqs7"]
+[ext_resource type="Script" path="res://code/Slot.cs" id="2_om6di"]
 [ext_resource type="Texture2D" uid="uid://d0fq45urphxxi" path="res://models/slotmachione_slotmachine_base.png" id="3_ciyhx"]
 [ext_resource type="Texture2D" uid="uid://cxd147h44g43y" path="res://models/environment.png" id="4_lixiu"]
 [ext_resource type="Texture2D" uid="uid://4pb5okhh1p2k" path="res://models/slotmachione_metallic.png" id="5_k0qac"]
-[ext_resource type="Script" path="res://SlotmachineAnimation.cs" id="6_l3pxo"]
-[ext_resource type="Script" path="res://Camera3D2.cs" id="8_e08xx"]
+[ext_resource type="Script" path="res://code/SlotmachineAnimation.cs" id="6_l3pxo"]
+[ext_resource type="Script" path="res://code/Camera3D2.cs" id="8_e08xx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_epvfv"]
 render_priority = 0
@@ -122,25 +122,26 @@ shader_parameter/metallic = ExtResource("5_k0qac")
 [node name="Slotmachine" type="Node3D"]
 
 [node name="slotmachione" parent="." instance=ExtResource("1_08tyf")]
-script = ExtResource("2_lwmvc")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
+script = ExtResource("2_om6di")
 
 [node name="Icosphere_lp" parent="slotmachione" index="0"]
 material_override = SubResource("ShaderMaterial_epvfv")
 
 [node name="Cube" parent="slotmachione" index="1"]
-transform = Transform3D(1, -0.000410397, 0, 0.000410397, 1, 0, 0, 0, 1, -0.0445547, 0.371314, -0.754129)
+transform = Transform3D(1, -1.19209e-07, 0, 1.19209e-07, 1, 0, 0, 0, 1, -0.0445547, 0.371314, -0.754129)
 material_override = SubResource("ShaderMaterial_tcnf5")
 
 [node name="Cylinder_001" parent="slotmachione" index="2"]
-transform = Transform3D(0.0408111, -1.61137e-07, -0.999167, -0.999167, -4.3675e-08, -0.0408111, -3.70624e-08, 1, -1.62785e-07, 0, 0.312924, 0)
+transform = Transform3D(-0.998111, -1.87931e-06, -0.0614343, -0.0614343, 1.21815e-07, 0.998111, -1.86827e-06, 1, -2.37038e-07, 0, 0.312924, 0)
 material_override = SubResource("ShaderMaterial_gubwt")
 
 [node name="Cylinder_002" parent="slotmachione" index="3"]
-transform = Transform3D(0.0323177, -1.57655e-07, -0.999477, -0.999477, -1.62836e-07, -0.0323177, -1.57655e-07, 1, -1.62836e-07, 0, 0.312924, -0.386852)
+transform = Transform3D(-0.998111, -1.87931e-06, -0.0614342, -0.0614342, 1.21815e-07, 0.998111, -1.86827e-06, 1, -2.37038e-07, 0, 0.312924, -0.386852)
 material_override = SubResource("ShaderMaterial_yb7qk")
 
 [node name="Cylinder_003" parent="slotmachione" index="4"]
-transform = Transform3D(0.975913, -1.05286e-09, -0.218159, -0.218159, -9.53602e-09, -0.975913, -1.05286e-09, 1, -9.53602e-09, 0, 0.312924, -0.772022)
+transform = Transform3D(-0.998111, -1.87931e-06, -0.0614342, -0.0614342, 1.21815e-07, 0.998111, -1.86827e-06, 1, -2.37038e-07, 0, 0.312924, -0.772022)
 material_override = SubResource("ShaderMaterial_x5lfc")
 
 [node name="AnimationPlayer" parent="slotmachione" index="5"]

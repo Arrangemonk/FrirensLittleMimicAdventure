@@ -13,7 +13,7 @@ public partial class BgMusic : AudioStreamPlayer2D
 	public override void _Process(double delta)
 	{
 		timer += (float)delta;
-		if(!Playing && MathF.PI < timer)
+		if(!Playing && 3f < timer)
 			Play();
 	}
 }

@@ -11,8 +11,8 @@ public partial class roller : Node3D
 		revolver = GetNode<MenuRevolver>(nameof(MenuRevolver));
 	}
 
-    public override void _Input(InputEvent @event)
-    {
+	public override void _Input(InputEvent @event)
+	{
 		revolver._Input(@event);
-    }
+	}
 }

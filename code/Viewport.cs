@@ -28,8 +28,8 @@ public partial class Viewport : Sprite2D
 		Modulate  = new Godot.Color(Modulate.R,Modulate.B,Modulate.B,Mathf.Sin(Mathf.Min(MathF.PI*0.5f,Math.Max(0,timer))));
 	}
 
-    public override void _Input(InputEvent @event)
-    {
+	public override void _Input(InputEvent @event)
+	{
 		if(Global.State != Gamestate.Title)
 			return;
 		
