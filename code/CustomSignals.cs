@@ -17,4 +17,7 @@ public partial class CustomSignals : Node
 
     [Signal]
     public delegate void ControlsUnlockedEventHandler();
+
+    [Signal]
+    public delegate void SlotmachineActivatedEventHandler();
 }

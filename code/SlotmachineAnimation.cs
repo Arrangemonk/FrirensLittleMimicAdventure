@@ -40,24 +40,28 @@ public partial class SlotmachineAnimation : AnimationPlayer
 		mat2.SetShaderParameter("offset",curr2 = rnd.Next(0,7)*1.0f);
 		var mat3 = cylinder3.MaterialOverride as ShaderMaterial;
 		mat3.SetShaderParameter("offset",curr3 = rnd.Next(0,7)*1.0f);
+
+		signals.SlotmachineActivated += Reset;
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		timeroffset += delta;
 		if(!animating)
 			return;
-		if(timer > 5f)
+		if(timer > 5f){
 			animating = false;
+			return;
+		}
 		timer += (float)delta;
-		timeroffset += delta;
 		var x = MathF.Max(0f,MathF.Min(1,MathF.Min(6.5f-1.3f*timer,timer*1.3f)));
 		Slotmachine.Position = Global.OvershootSmoothStep(startposition,restingposition,x);
 	}
 
 	public void Reset()
 	{
-		
+		GD.Print("slotmachine!!");
 		var mat1 = cylinder1.MaterialOverride as ShaderMaterial;
 		mat1.SetShaderParameter("resettime",timeroffset);
 		mat1.SetShaderParameter("initialoffset",curr1);
@@ -76,5 +80,6 @@ public partial class SlotmachineAnimation : AnimationPlayer
 		timer = 0;
 		animating = true;
 		Play("Scene");
+		Seek(0);
 	}
 }

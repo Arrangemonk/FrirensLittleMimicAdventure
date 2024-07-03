@@ -30,7 +30,7 @@ void fragment(){
 	vec2 uv = UV + vec2(mix(0,offset,time),0.0);
 	vec2 rnd = vec2(random(UV),random(UV* 2.0));
 	vec2 matcap_uv = (generate_matcap_uv(NORMAL, NODE_POSITION_VIEW)); // Matcap UV's
-	matcap_uv = mix(matcap_uv,SCREEN_UV,0.5) + rnd * 0.001;
+	matcap_uv = mix(matcap_uv,SCREEN_UV,0.2) + rnd * 0.001;
 	vec3 _matcap = texture(environment, matcap_uv).rgb; // Matcap Texture
 	float met = texture(metallic,uv + rnd * 0.0006).r;
 	vec3 diff = texture(diffuse,uv + rnd * 0.0006).xyz;
