@@ -21,12 +21,17 @@ public partial class RotatingChests : MultiMeshInstance3D
 	private chest_grimoir grimoir;
 	private chest_mimic mimic;
 
+	private GpuParticles3D SmokepuffReplacer;
+	private GpuParticles3D SmokepuffReplacee;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		signals = GetNode<CustomSignals>("/root/CustomSignals");
 		grimoir = GetNode<chest_grimoir>("../chest_grimoir");
 		mimic = GetNode<chest_mimic>("../chest_mimic");
+		SmokepuffReplacer = GetNode<GpuParticles3D>("SmokepuffReplacer");
+		SmokepuffReplacee = GetNode<GpuParticles3D>("SmokepuffReplacee");
 	
 		signals.AmountChecksChanged += Setup;
 		rnd = new Random();
@@ -46,7 +51,7 @@ public partial class RotatingChests : MultiMeshInstance3D
 					SetupResult();
 					break;
 				default:
-					SetupHidden();
+					SetupHidden(true);
 					break;
 			}
 	}
@@ -57,6 +62,8 @@ public partial class RotatingChests : MultiMeshInstance3D
 		if(Global.State != lastState)
 		{
 			lastState = Global.State;
+			SmokepuffReplacer.Emitting = false;
+			SmokepuffReplacee.Emitting = false;
 			Setup();
 		}
 		switch (Global.State)
@@ -74,13 +81,15 @@ public partial class RotatingChests : MultiMeshInstance3D
 				Hidden(delta);
 				break;
 		}
+		timer += (float)delta * speed;
 	}
 
-	private void SetupHidden()
+	private void SetupHidden(bool all = false)
 	{
 		mimic.Visible = false;
 		grimoir.Visible = false;
-		for (int i = 0; i < Global.MaxChests; i++)
+		var start = all ? 0: amount;
+		for (int i = start; i < Global.MaxChests; i++)
 		{
 			Multimesh.SetInstanceTransform(i, new Transform3D(Vector3.Zero, Vector3.Zero, Vector3.Zero, Vector3.Zero));
 		}
@@ -105,6 +114,31 @@ public partial class RotatingChests : MultiMeshInstance3D
         };
     }
 
+	private static int starter (int count)
+	{
+		return count switch
+        {
+            3 => 4,
+            4 => 0,
+            5 => 4,
+            6 => 1,
+            7 => 4,
+            8 => 1,
+            _ => 4,
+        };
+	}
+
+	private void Replace(int replacer, int replacee)
+	{
+		if(current == replacer)
+			current = replacee;
+		else if(current == replacee)
+		current = replacer;
+	}
+
+	private int current = 0;
+	private int selected = 0;
+
 	private void SetupShuffle()
 	{
 		speed = Global.Speed;
@@ -116,6 +150,7 @@ public partial class RotatingChests : MultiMeshInstance3D
 		amount = Global.AmountChests;
 		valids = ValidPositions(amount);
 		replacing = false;
+		current = starter(amount);
 	}
 
 
@@ -131,35 +166,70 @@ public partial class RotatingChests : MultiMeshInstance3D
 	
 	private void Shuffle(double delta)
 	{
-		timer += (float)delta * speed;
 		//predefine all as invalid
-		SetupHidden();
+		SetupHidden(true);
 		//place valid ones
 		foreach(int i in valids)
 		{
 			Multimesh.SetInstanceTransform(i, new Transform3D(Basis.Identity, new Vector3((i%3)*3f -3f,0f,(i-(i%3))-3f)));
 		}
+		//we dont want to confuse people with animation during fadestate
+		if(Global.Fadestate == Fadestate.FadeOut)
+			return;
 		//determine current pair
 		if(!replacing)
 		{
-			if(currentshuffle == shuffles)
-				Global.State = Gamestate.Revolver;
-			currentshuffle++;
+			if(currentshuffle == shuffles){
+				Global.Fadestate = Fadestate.FadeOut;
+				Global.TargetState =  Gamestate.Revolver;
+			}
+			else{
+				signals.EmitSignal(nameof(CustomSignals.PlaySound),"shuffle");
+			}
+			if(currentshuffle > 0){
+				GD.Print("shake");
+				signals.EmitSignal(nameof(CustomSignals.ViolentShakeStart));
+				signals.EmitSignal(nameof(CustomSignals.PlaySound),"impact");
+
+				SmokepuffReplacer.Position = new Vector3(replacerInit.X,0,replacerInit.Y);
+				SmokepuffReplacer.Emitting = true;
+				SmokepuffReplacee.Position = new Vector3(replaceeInit.X,0,replaceeInit.Y);
+				SmokepuffReplacee.Emitting = true;
+			}
 			replacing = true;
+			currentshuffle++;
 			timer = 0;
 				replacer = valids[rnd.Next(0,valids.Length)];
 			do{
 				replacee = valids[rnd.Next(0,valids.Length)];
 			}while(replacer == replacee);
+			Replace(replacer,replacee);
+			GD.Print(current);
+
 			replacerInit = new Vector2((replacer%3)*3f -3f,(replacer-(replacer%3))-3f);
 			replaceeInit = new Vector2((replacee%3)*3f -3f,(replacee-(replacee%3))-3f);
 		}
+		var progress = Global.Lerp(0f,1f,timer);
 		//animate replacement
-		var currentreplacer = Global.SmoothStep(replacerInit,replaceeInit,timer);
-		var currentreplacee = Global.SmoothStep(replaceeInit,replacerInit,timer);
+		var currentreplacer = Global.SmoothStep(replacerInit,replaceeInit,progress);
+		var currentreplacee = Global.SmoothStep(replaceeInit,replacerInit,progress);
 
-		Multimesh.SetInstanceTransform(replacer, new Transform3D(Basis.Identity, new Vector3(currentreplacer.X,Mathf.Sin(Global.SmoothStep(0f,1f,timer)* MathF.PI)*4f,currentreplacer.Y)));
-		Multimesh.SetInstanceTransform(replacee, new Transform3D(Basis.Identity, new Vector3(currentreplacee.X,Mathf.Sin(Global.SmoothStep(0f,1f,timer)* MathF.PI)*2f,currentreplacee.Y)));
+		var scale = 1f + MathF.Pow(Mathf.Cos(MathF.Max(0f,MathF.Min(1f,progress* MathF.PI))),2f)*0.2f;
+
+		Multimesh.SetInstanceTransform(replacer, 
+		new Transform3D(new Vector3(1,0,0), new Vector3(0,scale,0), new Vector3(0,0,1),
+		new Vector3(currentreplacer.X,Mathf.Sin(progress*  MathF.PI)*4f,currentreplacer.Y))
+		);
+		Multimesh.SetInstanceTransform(replacee,
+		 new Transform3D(new Vector3(1,0,0), new Vector3(0,scale,0), new Vector3(0,0,1),
+		 new Vector3(currentreplacee.X,Mathf.Sin(progress* MathF.PI)*2f,currentreplacee.Y))
+		 );
+
+		 if(timer >= 0.15f)
+		 {
+			SmokepuffReplacer.Emitting = false;
+			SmokepuffReplacee.Emitting = false;
+		 }
 
 		if(timer >= 1f)
 		replacing = false;
@@ -175,12 +245,9 @@ public partial class RotatingChests : MultiMeshInstance3D
 		rotation = 2.0f * MathF.PI / amount;
 		oldRotation = rotation;
 		currentRotation = rotation;
-		SetupHidden();
-		//or (int i = 0; i < amount; i++)
-		//{
-		//	var angle = 2.0f * MathF.PI * i / amount;
-		//	this.Multimesh.SetInstanceTransform(i, new Transform3D(Basis.Identity, new Vector3(MathF.Sin(angle) * distance, 0f, MathF.Cos(angle) * distance)));
-		//}
+		SetupHidden(true);
+		timer = 1;
+		selected = starter(amount);
 	}
 
 	float rotation = 0f;
@@ -189,9 +256,10 @@ public partial class RotatingChests : MultiMeshInstance3D
 
 	private void Revolver(double delta)
 	{
-		if(timer > 1)
+		if(timer > 1){
+			ProcessActions();
 		return;
-		timer += (float)delta * speed;
+		}
 		var tmprotation = Global.OvershootSmoothStep(oldRotation, currentRotation, timer);
 		for (int i = 0; i < amount; i++)
 		{
@@ -203,7 +271,6 @@ public partial class RotatingChests : MultiMeshInstance3D
 	private void resetRevolver(Direction direction)
 	{
 			timer = 0;
-			GD.Print(amount);
 			rotation = (direction == Direction.Left ? -1 : 1) * 2.0f * MathF.PI / amount;
 			oldRotation = 0f;
 			currentRotation = rotation;
@@ -212,7 +279,8 @@ public partial class RotatingChests : MultiMeshInstance3D
 
 	private void SetupResult()
 	{
-			SetupHidden();
+		timer = 0;
+		SetupHidden(true);
 		//we dont use the 0th, it is replaced by mimic or grimoir
 		for (int i = 1; i < amount; i++)
 		{
@@ -220,28 +288,33 @@ public partial class RotatingChests : MultiMeshInstance3D
 			Multimesh.SetInstanceTransform(i, new Transform3D(Basis.Identity, new Vector3(MathF.Sin(angle) * distance, 0f, MathF.Cos(angle) * distance)));
 		}
 	
-			if(Success)
+			if(selected == current)
 			{
 				//signals.EmitSignal(nameof(CustomSignals.PlaySound),"plop");
 				grimoir.Visible = true;
 				var player = grimoir.GetNode<AnimationPlayer>("GrimoirPlayer");
 				player.Seek(0.5);
+				slotmachinestaring = true;
 			}
 			else{
 				//signals.EmitSignal(nameof(CustomSignals.PlaySound),"plop");
 				mimic.Visible = true;
 				var player = mimic.GetNode<AnimationPlayer>("MimicPlayer");
 				player.Seek(0.5);
+				Global.Fadestate = Fadestate.FadeOut;
+				Global.TargetState = Gamestate.End;
 			}
-
-		signals.EmitSignal(nameof(CustomSignals.SlotmachineActivated));
-		signals.EmitSignal(nameof(CustomSignals.PlaySound),"slotmachine");
-
 	}
 
-
+	private bool slotmachinestaring;
 	private void Result(double Delta)
 	{
+		if(slotmachinestaring && timer > 0.7f){
+			slotmachinestaring = false;
+			GD.Print("slotmachine!!");
+			signals.EmitSignal(nameof(CustomSignals.SlotmachineActivated));
+			signals.EmitSignal(nameof(CustomSignals.PlaySound),"slotmachine");
+		}
 		
 	}
 
@@ -250,26 +323,51 @@ public partial class RotatingChests : MultiMeshInstance3D
 	private bool _return;
 
 
+
+		byte? action = null;
+
     public override void _Input(InputEvent @event)
     {
 		if(Global.State != Gamestate.Revolver)
 			return;
-		//if(timer < 1){
-		//return;
+		if(timer < 0.25) 
+			return;
 		if (@event.IsAction("Left"))
 		{
-			resetRevolver(Direction.Left);
-			signals.EmitSignal(nameof(CustomSignals.PlaySound),"plop");
+			action = 1;
 		}
 		if (@event.IsAction("Right"))
 		{
-			resetRevolver(Direction.Right);
-			signals.EmitSignal(nameof(CustomSignals.PlaySound),"plop");
+			action = 2;
 		}
 		if (@event.IsAction("Return"))
 		{
-			Global.State = Gamestate.Result;
+			action = 3;
 		}
     }
+
+	private void ProcessActions()
+	{
+        switch (action)
+        {
+            case 3:
+				//Global.Fadestate = Fadestate.FadeOut;
+				Global.State =  Gamestate.Result;
+				signals.EmitSignal(nameof(CustomSignals.PlaySound),"chestopen");
+                break;
+            case 1:
+                resetRevolver(Direction.Left);
+				selected = valids[(valids.ToList().IndexOf(selected) -1 + amount) % amount];
+                signals.EmitSignal(nameof(CustomSignals.PlaySound), "plop");
+                break;
+            case 2:
+                resetRevolver(Direction.Right);
+				selected = valids[(valids.ToList().IndexOf(selected) +1 + amount) % amount];
+                signals.EmitSignal(nameof(CustomSignals.PlaySound), "plop");
+                break;
+        }
+		GD.Print(selected);
+        action = null;
+	}
 	
 }

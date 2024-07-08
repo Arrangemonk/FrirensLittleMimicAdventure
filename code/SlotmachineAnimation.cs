@@ -48,9 +48,11 @@ public partial class SlotmachineAnimation : AnimationPlayer
 	public override void _Process(double delta)
 	{
 		timeroffset += delta;
-		if(!animating)
+		if(!animating || Global.State != Gamestate.Result)
 			return;
 		if(timer > 5f){
+			Global.Fadestate = Fadestate.FadeOut;
+			Global.TargetState = Gamestate.Shuffle;
 			animating = false;
 			return;
 		}
@@ -79,6 +81,7 @@ public partial class SlotmachineAnimation : AnimationPlayer
 	
 		timer = 0;
 		animating = true;
+		GD.Print("sound");
 		Play("Scene");
 		Seek(0);
 	}

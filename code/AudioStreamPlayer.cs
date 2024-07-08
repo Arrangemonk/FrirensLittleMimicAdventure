@@ -20,6 +20,9 @@ public partial class AudioStreamPlayer : Godot.AudioStreamPlayer
 		Sounds.Add("flma",GetNode<Godot.AudioStreamPlayer>("../flma"));
 		Sounds.Add("start",GetNode<Godot.AudioStreamPlayer>("../start"));
 		Sounds.Add("slotmachine",GetNode<Godot.AudioStreamPlayer>("../slotmachine"));
+		Sounds.Add("chestopen",GetNode<Godot.AudioStreamPlayer>("../chestopen"));
+		Sounds.Add("shuffle",GetNode<Godot.AudioStreamPlayer>("../shuffle"));
+		Sounds.Add("impact",GetNode<Godot.AudioStreamPlayer>("../impact"));
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -20,4 +20,10 @@ public partial class CustomSignals : Node
 
     [Signal]
     public delegate void SlotmachineActivatedEventHandler();
+
+    [Signal]
+    public delegate void ViolentShakeStartEventHandler();
+
+    [Signal]
+    public delegate void ViolentShakeEndEventHandler();
 }
