@@ -214,14 +214,15 @@ public partial class RotatingChests : MultiMeshInstance3D
 		var currentreplacer = Global.SmoothStep(replacerInit,replaceeInit,progress);
 		var currentreplacee = Global.SmoothStep(replaceeInit,replacerInit,progress);
 
-		var scale = 1f + MathF.Pow(Mathf.Cos(MathF.Max(0f,MathF.Min(1f,progress* MathF.PI))),2f)*0.2f;
+		var scaley = 1f + Mathf.Sin((progress + 0.25f) * 2 * Mathf.Pi) * 0.2f;
+		var scalex = 1.05f + Mathf.Sin((progress - 0.25f) * 2 * Mathf.Pi) * 0.025f;
 
 		Multimesh.SetInstanceTransform(replacer, 
-		new Transform3D(new Vector3(1,0,0), new Vector3(0,scale,0), new Vector3(0,0,1),
+		new Transform3D(new Vector3(scalex,0,0), new Vector3(0,scaley,0), new Vector3(0,0,1),
 		new Vector3(currentreplacer.X,Mathf.Sin(progress*  MathF.PI)*4f,currentreplacer.Y))
 		);
 		Multimesh.SetInstanceTransform(replacee,
-		 new Transform3D(new Vector3(1,0,0), new Vector3(0,scale,0), new Vector3(0,0,1),
+		 new Transform3D(new Vector3(scalex,0,0), new Vector3(0,scaley,0), new Vector3(0,0,1),
 		 new Vector3(currentreplacee.X,Mathf.Sin(progress* MathF.PI)*2f,currentreplacee.Y))
 		 );
 
@@ -297,23 +298,33 @@ public partial class RotatingChests : MultiMeshInstance3D
 				slotmachinestaring = true;
 			}
 			else{
+				mimistarting = true;
 				//signals.EmitSignal(nameof(CustomSignals.PlaySound),"plop");
 				mimic.Visible = true;
 				var player = mimic.GetNode<AnimationPlayer>("MimicPlayer");
 				player.Seek(0.5);
-				Global.Fadestate = Fadestate.FadeOut;
-				Global.TargetState = Gamestate.End;
 			}
 	}
 
 	private bool slotmachinestaring;
+	private bool mimistarting;
 	private void Result(double Delta)
 	{
-		if(slotmachinestaring && timer > 0.7f){
+		if(timer < 0.7f)
+			return;
+		if(slotmachinestaring)
+		{
 			slotmachinestaring = false;
 			GD.Print("slotmachine!!");
 			signals.EmitSignal(nameof(CustomSignals.SlotmachineActivated));
 			signals.EmitSignal(nameof(CustomSignals.PlaySound),"slotmachine");
+		}
+
+		if(mimistarting)
+		{
+			mimistarting = false;
+				Global.Fadestate = Fadestate.FadeOut;
+				Global.TargetState = Gamestate.End;
 		}
 		
 	}

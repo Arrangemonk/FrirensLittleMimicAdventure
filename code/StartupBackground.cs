@@ -12,6 +12,7 @@ public partial class StartupBackground : Godot.ColorRect
 		GetViewport().SizeChanged += onViewportResize;
 		onViewportResize();
 		Color = new Color(0,0,0);
+		signals.EmitSignal(nameof(CustomSignals.PlaySound),"flma");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,7 +25,6 @@ public partial class StartupBackground : Godot.ColorRect
 		if(timer >= MathF.PI * 1.05 && canplayAudio){
 			canplayAudio = false;
 			signals.EmitSignal(nameof(CustomSignals.ControlsUnlocked));
-			signals.EmitSignal(nameof(CustomSignals.PlaySound),"flma");
 		}
 	}
 

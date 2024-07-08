@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://blmjbhgo3p4n3"
 path.bptc="res://.godot/imported/menuRoller.png-176a16aa56953976e3ef4de0439b1399.bptc.ctex"
+path.astc="res://.godot/imported/menuRoller.png-176a16aa56953976e3ef4de0439b1399.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://images/menuRoller.png"
-dest_files=["res://.godot/imported/menuRoller.png-176a16aa56953976e3ef4de0439b1399.bptc.ctex"]
+dest_files=["res://.godot/imported/menuRoller.png-176a16aa56953976e3ef4de0439b1399.bptc.ctex", "res://.godot/imported/menuRoller.png-176a16aa56953976e3ef4de0439b1399.astc.ctex"]
 
 [params]
 

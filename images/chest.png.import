@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://watghb86iakw"
 path.s3tc="res://.godot/imported/chest.png-9450777c98006e5f5bae1da6bbfb4d8f.s3tc.ctex"
+path.etc2="res://.godot/imported/chest.png-9450777c98006e5f5bae1da6bbfb4d8f.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://images/chest.png"
-dest_files=["res://.godot/imported/chest.png-9450777c98006e5f5bae1da6bbfb4d8f.s3tc.ctex"]
+dest_files=["res://.godot/imported/chest.png-9450777c98006e5f5bae1da6bbfb4d8f.s3tc.ctex", "res://.godot/imported/chest.png-9450777c98006e5f5bae1da6bbfb4d8f.etc2.ctex"]
 
 [params]
 

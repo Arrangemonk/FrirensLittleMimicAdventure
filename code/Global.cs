@@ -43,7 +43,7 @@ public partial class Global : Node
     public static int MaxChests  {get;set;} = 9; 
     public static int Speed  {get;set;} = 1; 
     public static int MaxSpeed  {get;set;} = 10; 
-    public static int Shuffles  {get;set;} = 10; 
+    public static int Shuffles  {get;set;} = 3; 
     public static int MaxShuffles {get;set;} = 100; 
     public static Vector3 CameraPosition {get;set;}
     public static Vector3 CameraTarget {get;set;}

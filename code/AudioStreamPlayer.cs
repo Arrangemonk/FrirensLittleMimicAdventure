@@ -33,6 +33,8 @@ public partial class AudioStreamPlayer : Godot.AudioStreamPlayer
 	private void Playsound (string sound)
 	{
 		var current = Sounds[sound];
+
 		current.Play();
-	}		
+	}
+
 }

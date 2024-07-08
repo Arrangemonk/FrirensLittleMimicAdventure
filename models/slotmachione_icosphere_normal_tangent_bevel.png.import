@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://brk7dtvf4g72n"
 path.bptc="res://.godot/imported/slotmachione_icosphere_normal_tangent_bevel.png-243be4fc11995a4acafa83882905eb3e.bptc.ctex"
+path.astc="res://.godot/imported/slotmachione_icosphere_normal_tangent_bevel.png-243be4fc11995a4acafa83882905eb3e.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://models/slotmachione_icosphere_normal_tangent_bevel.png"
-dest_files=["res://.godot/imported/slotmachione_icosphere_normal_tangent_bevel.png-243be4fc11995a4acafa83882905eb3e.bptc.ctex"]
+dest_files=["res://.godot/imported/slotmachione_icosphere_normal_tangent_bevel.png-243be4fc11995a4acafa83882905eb3e.bptc.ctex", "res://.godot/imported/slotmachione_icosphere_normal_tangent_bevel.png-243be4fc11995a4acafa83882905eb3e.astc.ctex"]
 
 [params]
 

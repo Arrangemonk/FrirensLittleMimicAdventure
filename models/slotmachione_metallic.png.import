@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://4pb5okhh1p2k"
 path.bptc="res://.godot/imported/slotmachione_metallic.png-b712dc6ef7286e525d15ce8381dcf499.bptc.ctex"
+path.astc="res://.godot/imported/slotmachione_metallic.png-b712dc6ef7286e525d15ce8381dcf499.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://models/slotmachione_metallic.png"
-dest_files=["res://.godot/imported/slotmachione_metallic.png-b712dc6ef7286e525d15ce8381dcf499.bptc.ctex"]
+dest_files=["res://.godot/imported/slotmachione_metallic.png-b712dc6ef7286e525d15ce8381dcf499.bptc.ctex", "res://.godot/imported/slotmachione_metallic.png-b712dc6ef7286e525d15ce8381dcf499.astc.ctex"]
 
 [params]
 
