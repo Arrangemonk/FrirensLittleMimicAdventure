@@ -33,17 +33,19 @@ public enum Player{
 
 public partial class Global : Node
 {
+
     public static Gamestate State {get;set;} = Gamestate.Title;
     public static Gamestate TargetState {get;set;} = Gamestate.Title;
     public static Fadestate Fadestate {get;set;} = Fadestate.None;
 
     public static Player TargetPlayer {get;set;} = Player.Friren;
     public static Player Player {get;set;} = Player.Friren;
-    public static int AmountChests {get;set;} = 3;
+    public static int AmountChests {get;set;} = 9;
     public static int MaxChests  {get;set;} = 9; 
     public static int Speed  {get;set;} = 1; 
     public static int MaxSpeed  {get;set;} = 10; 
-    public static int Shuffles  {get;set;} = 3; 
+    public static int Shuffles  {get;set;} = 4; 
+    public static int SlotResult {get;set;}
     public static int MaxShuffles {get;set;} = 100; 
     public static Vector3 CameraPosition {get;set;}
     public static Vector3 CameraTarget {get;set;}

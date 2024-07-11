@@ -1,9 +1,8 @@
 shader_type spatial;
 render_mode unshaded,blend_add;
 uniform sampler2D environment : filter_linear;
-uniform sampler2D diffuse : filter_linear;
-uniform sampler2D metallic : filter_linear;
 uniform sampler2D noise : filter_linear;
+uniform sampler2D depth : hint_depth_texture;
 void vertex() {
 	// Called for every vertex the material is visible on.
 }
@@ -23,20 +22,18 @@ vec2 generate_matcap_uv(vec3 _normal, vec3 _node_position_view) {
 }
 
 void fragment(){
-	vec2 uv = UV2 + vec2(TIME *-1.0,TIME *0.2);
-	vec2 rnd = vec2(random(UV),random(UV* 2.0));
+	vec2 uv = UV2 + vec2(TIME *-1.0,0.0);
 	vec2 matcap_uv = (generate_matcap_uv(NORMAL, NODE_POSITION_VIEW)); // Matcap UV's
-	matcap_uv = mix(matcap_uv,SCREEN_UV,0.2) + rnd * 0.001;
+	matcap_uv = mix(matcap_uv,SCREEN_UV,0.2);
 	vec3 _matcap = texture(environment, matcap_uv).rgb; // Matcap Texture
-	float met = texture(metallic,UV + rnd * 0.0006).r;
-	vec3 diff = texture(diffuse,UV + rnd * 0.0006).xyz;
-	float noisepx = texture(noise,uv + rnd * 0.0006).x;
-	float sine = 1.0 - abs(pow(sin(TIME *PI * 2.0),10))*0.85;
-	ALBEDO = noisepx * sine * pow(2.0 *diff * _matcap * met + diff * (1.01 - met),vec3(2.5));
-	//ALBEDO = vec3(matcap_uv,1.0);
+	float met = texture(noise,UV).r;
+	met = met * met;
+	float noisepx = texture(noise,uv).x;
+	float sine = sin(TIME * PI * 2.0);
+	sine = 1.0 - 0.6 * sine * sine * sine* sine* sine * sine * sine* sine;
+	float d = texture(depth, SCREEN_UV).x;
+	d = PROJECTION_MATRIX[3][2] /(d + PROJECTION_MATRIX[2][2])*0.1;
+	d = max(0,min(1,d * d));
+	ALBEDO = d * noisepx * sine * pow(2.0 * _matcap ,vec3(2.5))* met; 
 }
 
-//void light() {
-	// Called for every pixel for every light affecting the material.
-	// Uncomment to replace the default light processing function with this one.
-//}

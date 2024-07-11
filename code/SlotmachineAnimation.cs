@@ -65,6 +65,7 @@ public partial class SlotmachineAnimation : AnimationPlayer
 	{
 		GD.Print("slotmachine!!");
 		var mat1 = cylinder1.MaterialOverride as ShaderMaterial;
+
 		mat1.SetShaderParameter("resettime",timeroffset);
 		mat1.SetShaderParameter("initialoffset",curr1);
 		mat1.SetShaderParameter("offset",curr1 = Next1 ?? rnd.Next(0,8)*1.0f);
@@ -78,11 +79,28 @@ public partial class SlotmachineAnimation : AnimationPlayer
 		mat3.SetShaderParameter("resettime",timeroffset);
 		mat3.SetShaderParameter("initialoffset",curr3);
 		mat3.SetShaderParameter("offset",curr3 = Next3 ??  rnd.Next(0,8)*1.0f);
-	
+
+		Global.SlotResult = countEquals(((int)curr1)%4,((int)curr2)%4,((int)curr3)%4);
+		GD.Print("slotresult",Global.SlotResult);
 		timer = 0;
 		animating = true;
-		GD.Print("sound");
 		Play("Scene");
 		Seek(0);
+	}
+
+	private int countEquals(params int[] input)
+	{
+		int current = -1;
+		int count = 0;
+		foreach(var i in input.OrderBy(n => n))
+		{
+			if(i != current){
+			current = i;
+			count = 1;
+			}
+			else
+			count++;
+		}
+		return count;
 	}
 }

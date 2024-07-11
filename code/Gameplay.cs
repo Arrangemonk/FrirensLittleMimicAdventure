@@ -10,6 +10,8 @@ public partial class Gameplay : Node3D
 		Engine.MaxFps = 60;
 		signals = GetNode<CustomSignals>("/root/CustomSignals");
 		signals.StateChanged += OnStateChanged;
+		Input.MouseMode = Input.MouseModeEnum.Hidden;
+		signals.EmitSignal(nameof(CustomSignals.StateChanged));
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
