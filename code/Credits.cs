@@ -1,34 +1,29 @@
 using Godot;
 using System;
 
-public partial class Credits : Godot.RichTextLabel
+public partial class Credits : RichTextLabel
 {
 	private CustomSignals signals;
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		signals.StateChanged += OnStateChanged;
-		GetViewport().SizeChanged += onViewportResize;
-		onViewportResize();
+		GetViewport().SizeChanged += OnViewportResize;
+		OnViewportResize();
 		Visible = false;
 	}
 
-	public override void _Process(double delta)
-	{
-	}
-
-	private void OnStateChanged()
+    private void OnStateChanged()
 	{
 		Visible = false;
 		if(Global.State != Gamestate.Credits)
 			return;
 		Global.CameraPosition = new Vector3(0.0f,5.0f,6.0f);
 		Global.CameraTarget = new Vector3(0.0f, 6.0f, 10f);
-		onViewportResize();
-		//Visible = true;
-	}
+		OnViewportResize();
+    }
 
-	private void onViewportResize()
+	private void OnViewportResize()
 	{
 		var screensize = GetViewport().GetVisibleRect().Size;
 		var factor = screensize.X /  1280f;

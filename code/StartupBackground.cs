@@ -1,34 +1,31 @@
 using Godot;
 using System;
 
-public partial class StartupBackground : Godot.ColorRect
+public partial class StartupBackground : ColorRect
 {
-		float timer = MathF.PI * 0.25f;
+    private float timer = MathF.PI * 0.25f;
 	private CustomSignals signals;
-	private bool canplayAudio = true;
-	public override void _Ready()
+    public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
-		GetViewport().SizeChanged += onViewportResize;
-		onViewportResize();
-		Color = new Color(0,0,0);
-		signals.EmitSignal(nameof(CustomSignals.PlaySound),"flma");
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+		signals = Global.Signals(this);
+        Color = new Color(0, 0, 0);
+        Global.Playsound(this,Audio.Flma);
+        GetViewport().SizeChanged += OnViewportResize;
+        OnViewportResize();
+}
+    public override void _Process(double delta)
 	{
 		if(Global.State != Gamestate.Title)
-		return;
+		    return;
 		timer += (float)delta;
-		Modulate  = new Godot.Color(Modulate.R,Modulate.B,Modulate.B,Mathf.Sin(Mathf.Min(Math.Max(MathF.PI/2f,timer),MathF.PI)));
-		if(timer >= MathF.PI * 1.05 && canplayAudio){
-			canplayAudio = false;
-			signals.EmitSignal(nameof(CustomSignals.ControlsUnlocked));
-		}
-	}
+        Modulate = Modulate with { A = Mathf.Sin(Mathf.Min(Math.Max(MathF.PI / 2f, timer), MathF.PI)) };
+        if (timer < MathF.PI * 1.05 ) 
+            return;
+        signals.EmitSignal(nameof(CustomSignals.ControlsUnlocked));
+		QueueFree();
+    }
 
- 	private void onViewportResize()
+ 	private void OnViewportResize()
 	{
 		Size = GetViewport().GetVisibleRect().Size;
 		Position = new Vector2(0,0);

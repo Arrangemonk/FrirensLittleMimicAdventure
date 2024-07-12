@@ -10,11 +10,11 @@ public partial class MenuRevolver : MeshInstance3D
 	private float timer = 0;
 	private bool canstart = false;
 
-	CustomSignals signals;
+    private CustomSignals signals;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		signals.ControlsUnlocked += ControlsUnlocked;
 	}
 
@@ -49,21 +49,21 @@ public partial class MenuRevolver : MeshInstance3D
 			rollerstate += 1;
 			rollerstate = ((rollerstate % 8) + 8) % 8;
 			FixRotation();
-			signals.EmitSignal(nameof(CustomSignals.PlaySound),"plop");
+			Global.Playsound(this,Audio.Plop);
 		}
 		if (@event.IsAction("Up"))
 		{
 			rollerstate -= 1;
 			rollerstate = ((rollerstate % 8) + 8) % 8;
 			FixRotation();
-			signals.EmitSignal(nameof(CustomSignals.PlaySound),"plop");
-		}
+            Global.Playsound(this, Audio.Plop);
+}
 		if (@event.IsActionReleased("Return") && canstart)
 		{
 			Global.Fadestate = Fadestate.FadeOut;
 			Global.TargetState = GameStateFromRollerState(rollerstate);
 			GD.Print("ROLLER ",Global.TargetState.ToString());
-			signals.EmitSignal(nameof(CustomSignals.PlaySound),"start");
+			Global.Playsound(this,Audio.Start);
 		}
 	//OvershootSmoothStep	
 	}

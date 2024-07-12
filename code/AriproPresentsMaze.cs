@@ -5,11 +5,11 @@ using System.Drawing;
 public partial class AriproPresentsMaze : Sprite2D
 {
 	// Called when the node enters the scene tree for the first time.
-	float timer = 0;
+    private float timer = 0;
 	public override void _Ready()
 	{
-		GetViewport().SizeChanged += onViewportResize;
-		onViewportResize();
+		GetViewport().SizeChanged += OnViewportResize;
+		OnViewportResize();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -23,7 +23,7 @@ public partial class AriproPresentsMaze : Sprite2D
 		Modulate  = new Godot.Color(Modulate.R,Modulate.B,Modulate.B,Mathf.Sin(Mathf.Min(MathF.PI,timer)));
 	}
 
-	private void onViewportResize()
+	private void OnViewportResize()
 	{
 		var screensize = GetViewport().GetVisibleRect().Size;
 		var scale = screensize.X / Texture.GetSize().X *0.5f;

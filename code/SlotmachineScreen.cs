@@ -4,20 +4,20 @@ using System;
 public partial class SlotmachineScreen : Sprite2D
 {
 // Called when the node enters the scene tree for the first time.
-	SubViewport svp;
-	Node3D slotmachine;
+private SubViewport svp;
+private Node3D slotmachine;
 	
 	private CustomSignals signals;
 
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		svp = GetNode<SubViewport>("SlotmachineViewport");	 
-		slotmachine = svp.GetNode<slotmachine>("Slotmachine");
+		slotmachine = svp.GetNode<Slotmachine>("Slotmachine");
 		Texture = svp.GetTexture();
-		GetViewport().SizeChanged += onViewportResize;
-		signals.StateChanged += onViewportResize;
-		onViewportResize();
+		GetViewport().SizeChanged += OnViewportResize;
+		signals.StateChanged += OnViewportResize;
+		OnViewportResize();
 	}
 
 	public override void _Process(double delta)
@@ -32,7 +32,7 @@ public partial class SlotmachineScreen : Sprite2D
 		slotmachine._Input(@event);   
 	}
 
-	private void onViewportResize()
+	private void OnViewportResize()
 	{
 		//if(Global.State != Gamestate.Result){
 		//	Scale = Vector2.Zero;

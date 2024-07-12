@@ -7,13 +7,13 @@ public partial class Licence : Sprite2D
 	private CustomSignals signals;
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
-		GetViewport().SizeChanged += onViewportResize;
-		signals.StateChanged += onViewportResize;
-		onViewportResize();
+		signals = Global.Signals(this);
+		GetViewport().SizeChanged += OnViewportResize;
+		signals.StateChanged += OnViewportResize;
+		OnViewportResize();
 	}
 
-	private void onViewportResize()
+	private void OnViewportResize()
 	{
 		if(Global.State != Gamestate.Title){
 			Scale = Vector2.Zero;
@@ -25,7 +25,7 @@ public partial class Licence : Sprite2D
 		Scale = new Vector2(scale,scale);
 	}
 
-	float timer = -2f;
+    private float timer = -2f;
 	public override void _Process(double delta)
 	{
 		timer += (float)delta;

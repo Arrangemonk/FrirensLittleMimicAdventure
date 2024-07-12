@@ -3,20 +3,20 @@ using System;
 
 public partial class Camera3D2 : Godot.Camera3D
 {
-	float distance = 0.2f;
-	float speed = 0.2f;
-	float oldx = 0;
-	float oldy = 0;
-	float oldz = 0;
-	float currx = 0;
-	float curry = 0;
-	float currz = 0;
-	float timer = 0;
+    private float distance = 0.2f;
+    private float speed = 0.2f;
+    private float oldx = 0;
+    private float oldy = 0;
+    private float oldz = 0;
+    private float currx = 0;
+    private float curry = 0;
+    private float currz = 0;
+    private float timer = 0;
 
-	Vector3 initialposition;
-	Vector3 initiallookat;
-	
-	RandomNumberGenerator rng = new RandomNumberGenerator();
+    private Vector3 initialposition;
+    private Vector3 initiallookat;
+
+    private RandomNumberGenerator rng = new RandomNumberGenerator();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

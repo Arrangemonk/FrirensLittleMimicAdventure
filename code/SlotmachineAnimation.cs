@@ -6,34 +6,34 @@ public partial class SlotmachineAnimation : AnimationPlayer
 {
 	// Called when the node enters the scene tree for the first time.
 
-	MeshInstance3D cylinder1;
-	MeshInstance3D cylinder2;
-	MeshInstance3D cylinder3;
+    private MeshInstance3D cylinder1;
+    private MeshInstance3D cylinder2;
+    private MeshInstance3D cylinder3;
 
-	Node3D Slotmachine;
-	Vector3 startposition = new Vector3(0f,-5f,0f);
-	Vector3 restingposition = Vector3.Zero;
-	float timer = 0f;
-	double timeroffset = 0f;
-	float curr1;
-	float curr2;
-	float curr3;
+    private Node3D slotmachine;
+    private Vector3 startposition = new Vector3(0f,-5f,0f);
+    private Vector3 restingposition = Vector3.Zero;
+    private float timer = 0f;
+    private double timeroffset = 0f;
+    private float curr1;
+    private float curr2;
+    private float curr3;
 
 	public float? Next1 {get;set;}
 	public float? Next2 {get;set;}
 	public float? Next3 {get;set;}
-	Random rnd = new Random();
-	bool animating = false;
+    private readonly Random rnd = new Random();
+    private bool animating = false;
 	private CustomSignals signals;
 
 
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		cylinder1 = GetNode<MeshInstance3D>("../Cylinder_001");
 		cylinder2 = GetNode<MeshInstance3D>("../Cylinder_002");
 		cylinder3 = GetNode<MeshInstance3D>("../Cylinder_003");
-		Slotmachine = GetNode<Slot>("../../slotmachione");
+		slotmachine = GetNode<Slot>("../../Slotmachine");
 		var mat1 = cylinder1.MaterialOverride as ShaderMaterial;
 		mat1.SetShaderParameter("offset",curr1 = rnd.Next(0,7)*1.0f);
 		var mat2 = cylinder2.MaterialOverride as ShaderMaterial;
@@ -42,7 +42,12 @@ public partial class SlotmachineAnimation : AnimationPlayer
 		mat3.SetShaderParameter("offset",curr3 = rnd.Next(0,7)*1.0f);
 
 		signals.SlotmachineActivated += Reset;
-	}
+
+        GD.Print("speed:", Global.Speed);
+        GD.Print("Shuffles:", Global.Shuffles);
+        GD.Print("AmountChests:", Global.AmountChests);
+        signals.EmitSignal(nameof(CustomSignals.HandycapChanged));
+    }
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -54,19 +59,18 @@ public partial class SlotmachineAnimation : AnimationPlayer
 			Global.Fadestate = Fadestate.FadeOut;
 			Global.TargetState = Gamestate.Shuffle;
 			animating = false;
-			return;
+            signals.EmitSignal(nameof(CustomSignals.HandycapChanged));
+            return;
 		}
 		timer += (float)delta;
 		var x = MathF.Max(0f,MathF.Min(1,MathF.Min(6.5f-1.3f*timer,timer*1.3f)));
-		Slotmachine.Position = Global.OvershootSmoothStep(startposition,restingposition,x);
+		slotmachine.Position = Global.OvershootSmoothStep(startposition,restingposition,x);
 	}
 
 	public void Reset()
 	{
-		GD.Print("slotmachine!!");
-		var mat1 = cylinder1.MaterialOverride as ShaderMaterial;
-
-		mat1.SetShaderParameter("resettime",timeroffset);
+        var mat1 = cylinder1.MaterialOverride as ShaderMaterial;
+        mat1.SetShaderParameter("resettime",timeroffset);
 		mat1.SetShaderParameter("initialoffset",curr1);
 		mat1.SetShaderParameter("offset",curr1 = Next1 ?? rnd.Next(0,8)*1.0f);
 
@@ -80,18 +84,27 @@ public partial class SlotmachineAnimation : AnimationPlayer
 		mat3.SetShaderParameter("initialoffset",curr3);
 		mat3.SetShaderParameter("offset",curr3 = Next3 ??  rnd.Next(0,8)*1.0f);
 
-		Global.SlotResult = countEquals(((int)curr1)%4,((int)curr2)%4,((int)curr3)%4);
+		Global.SlotResult = CountEquals(((int)curr1)%4,((int)curr2)%4,((int)curr3)%4);
 		GD.Print("slotresult",Global.SlotResult);
-		timer = 0;
+
+        Global.Speed = Math.Min(Global.MaxSpeed,Global.Speed + (Global.SlotResult == 1 ? 1 : 0));
+        Global.Shuffles = Math.Min(Global.MaxShuffles, Global.Shuffles + (Global.SlotResult == 2 ? 1 : 0));
+        Global.AmountChests = Math.Min(Global.MaxChests, Global.AmountChests + (Global.SlotResult == 3 ? 1 : 0));
+
+		GD.Print("speed:", Global.Speed);
+        GD.Print("Shuffles:", Global.Shuffles);
+        GD.Print("AmountChests:", Global.AmountChests);
+
+        timer = 0;
 		animating = true;
 		Play("Scene");
 		Seek(0);
 	}
 
-	private int countEquals(params int[] input)
+	private int CountEquals(params int[] input)
 	{
-		int current = -1;
-		int count = 0;
+		var current = -1;
+		var count = 0;
 		foreach(var i in input.OrderBy(n => n))
 		{
 			if(i != current){

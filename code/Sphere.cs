@@ -6,7 +6,7 @@ public partial class Sphere : MeshInstance3D
 	private CustomSignals signals;
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		signals.StateChanged += OnStateChanged;
 	}
 	private void OnStateChanged()

@@ -1,12 +1,12 @@
 using Godot;
 using System;
 
-public partial class rightGoon3d : Sprite3D
+public partial class RightGoon3d : Sprite3D
 {
 private CustomSignals signals;
 
-	
-	Texture2D[] textures = new[]{
+
+private Texture2D[] textures = new[]{
 		GD.Load<Texture2D>("res://images//fern.png"),
 		GD.Load<Texture2D>("res://images//stark.png"),
 		GD.Load<Texture2D>("res://images//friren.png")
@@ -14,7 +14,7 @@ private CustomSignals signals;
 
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		signals.PlayerChanged += PlayerChanged;
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

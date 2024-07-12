@@ -4,24 +4,24 @@ using System;
 public partial class Viewport : Sprite2D
 {
 	// Called when the node enters the scene tree for the first time.
-	SubViewport svp;
-	Node3D roller;
+    private SubViewport svp;
+    private Node3D roller;
 	
 	private CustomSignals signals;
 
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		svp = GetNode<SubViewport>("RollerViewport");	 
-		roller = svp.GetNode<roller>("Roller");
+		roller = svp.GetNode<Roller>("Roller");
 		Texture = svp.GetTexture();
-		GetViewport().SizeChanged += onViewportResize;
-		signals.StateChanged += onViewportResize;
-		onViewportResize();
+		GetViewport().SizeChanged += OnViewportResize;
+		signals.StateChanged += OnViewportResize;
+		OnViewportResize();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	float timer = -2f;
+    private float timer = -2f;
 	public override void _Process(double delta)
 	{
 		timer += (float)delta;
@@ -36,7 +36,7 @@ public partial class Viewport : Sprite2D
 		roller._Input(@event);   
 	}
 
-	private void onViewportResize()
+	private void OnViewportResize()
 	{
 		if(Global.State != Gamestate.Title){
 			Scale = Vector2.Zero;

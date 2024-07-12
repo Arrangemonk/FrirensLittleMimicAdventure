@@ -3,14 +3,14 @@ using System;
 
 public partial class CustomSignals : Node
 {
-	[Signal]
+    [Signal]
     public delegate void PlayerChangedEventHandler();
 
-     [Signal]
+    [Signal]
     public delegate void StateChangedEventHandler();
 
     [Signal]
-    public delegate void PlaySoundEventHandler(string sound);
+    public delegate void PlaySoundEventHandler(int sound);
 
     [Signal]
     public delegate void AmountChecksChangedEventHandler();
@@ -22,6 +22,9 @@ public partial class CustomSignals : Node
     public delegate void SlotmachineActivatedEventHandler();
 
     [Signal]
-    public delegate void ViolentShakeStartEventHandler();
+    public delegate void ShakeStartEventHandler();
+
+    [Signal]
+    public delegate void HandycapChangedEventHandler();
 
 }

@@ -3,23 +3,23 @@ using System;
 
 public partial class Goons : Sprite2D
 {
-	Texture2D[] textures = new[]{
+    private Texture2D[] textures = new[]{
 		GD.Load<Texture2D>("res://images//Goons_0.png"),
 		GD.Load<Texture2D>("res://images//Goons_1.png"),
 		GD.Load<Texture2D>("res://images//Goons_2.png")
 		};
 
 	private CustomSignals signals;
-	float timer = -2f;
+    private float timer = -2f;
 
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		signals.PlayerChanged += OnPlayerChange;
-		signals.StateChanged += onStateChange;
-		GetViewport().SizeChanged += onViewportResize;
+		signals.StateChanged += OnStateChange;
+		GetViewport().SizeChanged += OnViewportResize;
 		Texture = textures[(int)Global.Player];
-		onViewportResize();
+		OnViewportResize();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,7 +29,7 @@ public partial class Goons : Sprite2D
 		Modulate  = new Godot.Color(Modulate.R,Modulate.B,Modulate.B,Mathf.Sin(Mathf.Min(MathF.PI*0.5f,Math.Max(0,timer))));
 	}
 
-	private void onViewportResize()
+	private void OnViewportResize()
 	{
 		if(Global.State != Gamestate.Title){
 			Scale = Vector2.Zero;
@@ -47,11 +47,11 @@ public partial class Goons : Sprite2D
 		Texture = textures[(int)Global.Player];
 	}
 
-	private void onStateChange()
+	private void OnStateChange()
 	{
 		if(Global.State != Gamestate.Title)
 			Scale = new Vector2(0,0);
 		else
-			onViewportResize();
+			OnViewportResize();
 	}
 }

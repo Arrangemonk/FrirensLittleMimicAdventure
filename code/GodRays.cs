@@ -7,7 +7,7 @@ public partial class GodRays : Node3D
 	private MeshInstance3D rays;
 	public override void _Ready()
 	{
-		signals = GetNode<CustomSignals>("/root/CustomSignals");
+		signals = Global.Signals(this);
 		rays = GetNode<MeshInstance3D>("rays");
 		signals.StateChanged += OnStateChanged;
 		rays.Visible = true;
