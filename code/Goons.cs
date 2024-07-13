@@ -20,6 +20,7 @@ public partial class Goons : Sprite2D
 		GetViewport().SizeChanged += OnViewportResize;
 		Texture = textures[(int)Global.Player];
 		OnViewportResize();
+		OnPlayerChange();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

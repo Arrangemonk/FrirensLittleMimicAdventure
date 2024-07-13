@@ -5,49 +5,51 @@ public partial class Gameplay : Node3D
 {
 
 	private CustomSignals signals;
-	private TextureProgressBar Shufflebar; 
-	private TextureProgressBar Speedbar; 
-	private TextureProgressBar Chestbar; 
-	public override void _Ready()
+	private NinePatchRect shufflebar; 
+	private NinePatchRect speedbar; 
+	private NinePatchRect chestbar;
+    private Sprite2D charball;
+    private Texture2D[] textures = new[]{
+        GD.Load<Texture2D>("res://images/frieren_ball.png"),
+        GD.Load<Texture2D>("res://images//fern_ball.png"),
+        GD.Load<Texture2D>("res://images//stark_ball.png")
+    };
+public override void _Ready()
 	{
 		Engine.MaxFps = 60;
 		signals = Global.Signals(this);
 		signals.StateChanged += OnStateChanged;
-		signals.HandycapChanged +=  HandycapChanged;
-		Input.MouseMode = Input.MouseModeEnum.Hidden;
-		Shufflebar = GetNode<TextureProgressBar>(nameof(Shufflebar));
-		Speedbar = GetNode<TextureProgressBar>(nameof(Speedbar));
-		Chestbar = GetNode<TextureProgressBar>(nameof(Chestbar));
-		signals.EmitSignal(nameof(CustomSignals.StateChanged));
-	}
+		signals.HandycapChanged += HandycapChanged;
+        signals.PlayerChanged += PlayerChanged;
+        Input.MouseMode = Input.MouseModeEnum.Hidden;
+		shufflebar = GetNode<NinePatchRect>("Hud//ShuffleBar");
+		speedbar = GetNode<NinePatchRect>("Hud//SpeedBar");
+		chestbar = GetNode<NinePatchRect>("Hud//ChestBar");
+        charball = GetNode<Sprite2D>("Hud//CharBall");
+        HandycapChanged();
+        OnStateChanged();
+        PlayerChanged();
+    }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-    private double timer = 0;
-	public override void _Process(double delta)
-	{
-		/*timer+= delta;
-		if(3 < timer )
-		{
-			timer = 0d;
-			Global.AmountChests = Math.Max(3,(Global.AmountChests +1) % (Global.MaxChests +1));
-			signals.EmitSignal(nameof(CustomSignals.AmountChecksChanged));
-		}
-		*/
-	}
+    private void PlayerChanged()
+    {
+        charball.Texture = textures[(int)Global.Player];
+    }
 
-		public override void _Input(InputEvent @event)
-	{
-		if (@event.IsAction("Escape") && Global.Fadestate == Fadestate.None)
-		if (Global.State != Gamestate.Title)
-		{
-			Global.Fadestate = Fadestate.FadeOut;
-			Global.TargetState = Gamestate.Title;
-		}
-		else if (Global.State == Gamestate.Title){
-			Global.Fadestate = Fadestate.FadeOut;
-			Global.TargetState = Gamestate.Quit;
-		}
-	}
+    public override void _Input(InputEvent @event)
+    {
+        if (!@event.IsAction("Escape") || Global.Fadestate != Fadestate.None) 
+            return;
+        if (Global.State != Gamestate.Title)
+        {
+            Global.Fadestate = Fadestate.FadeOut;
+            Global.TargetState = Gamestate.Title;
+        }
+        else if (Global.State == Gamestate.Title){
+            Global.Fadestate = Fadestate.FadeOut;
+            Global.TargetState = Gamestate.Quit;
+        }
+    }
 	private void OnStateChanged()
 	{
 		if (Global.State == Gamestate.Quit)
@@ -59,11 +61,12 @@ public partial class Gameplay : Node3D
             Global.Speed = 1;
             Global.Shuffles = 3;
             Global.AmountChests = 3;
+            HandycapChanged();
         }
-
-        Shufflebar.Visible =
-            Speedbar.Visible =
-                Chestbar.Visible = (Global.State == Gamestate.Revolver || Global.State == Gamestate.Shuffle || Global.State == Gamestate.Result);
+        charball.Visible =
+        shufflebar.Visible =
+        speedbar.Visible =
+        chestbar.Visible = (Global.State == Gamestate.Revolver || Global.State == Gamestate.Shuffle || Global.State == Gamestate.Result);
 
     }
 
@@ -75,8 +78,14 @@ public partial class Gameplay : Node3D
 
 	private void HandycapChanged()
 	{
-		Shufflebar.Value = Global.Shuffles;
-		Speedbar.Value = Global.Speed;
-		Chestbar.Value = Global.AmountChests;
-	}
+        shufflebar.SetSize(new Vector2(GetWith(Global.Shuffles, Global.MaxShuffles),shufflebar.Size.Y));
+        speedbar.SetSize(new Vector2(GetWith(Global.Speed, Global.MaxSpeed), speedbar.Size.Y));
+        chestbar.SetSize(new Vector2(GetWith(Global.AmountChests, Global.MaxChests), chestbar.Size.Y));
+    }
+
+    private float GetWith(float value,float maxvalue)
+    {
+        var max = GetViewport().GetVisibleRect().Size.X * 0.5f - 156f;
+        return (MathF.Floor(Global.Lerp(16, max, value / maxvalue)));
+    }
 }

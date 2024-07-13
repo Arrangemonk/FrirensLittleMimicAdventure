@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://gtv5f1gn717m"]
 
-[ext_resource type="Script" path="res://code/roller.cs" id="1_b4je0"]
-[ext_resource type="Texture2D" uid="uid://blmjbhgo3p4n3" path="res://images/menuRoller.png" id="2_e5ice"]
+[ext_resource type="Script" path="res://code/Roller.cs" id="1_ldmjk"]
+[ext_resource type="Texture2D" uid="uid://bd0nnf5qkpol6" path="res://images/menuRoller.png" id="2_e5ice"]
 [ext_resource type="Script" path="res://code/MenuRevolver.cs" id="3_84ecd"]
 [ext_resource type="ArrayMesh" uid="uid://bdcigh8t1bapt" path="res://models/menu revolver.obj" id="3_e0xig"]
 
@@ -11,7 +11,7 @@ shading_mode = 0
 albedo_texture = ExtResource("2_e5ice")
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource("1_b4je0")
+script = ExtResource("1_ldmjk")
 
 [node name="MenuRevolver" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_brgxl")
