@@ -16,16 +16,19 @@ private Texture2D[] textures = new[]{
 	{
 		signals = Global.Signals(this);
 		signals.PlayerChanged += PlayerChanged;
-	}
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		Visible = Global.State == Gamestate.Revolver
-		|| Global.State == Gamestate.Result;
-	}
+        signals.StateChanged += StateChanged;
+        PlayerChanged();
+        StateChanged();
+    }
 
-	private void PlayerChanged()
+    private void PlayerChanged()
 	{
 		Texture = textures[(int)Global.Player];
 	}
+
+    private void StateChanged()
+    {
+        Visible = Global.State == Gamestate.Revolver
+                  || Global.State == Gamestate.Result;
+    }
 }

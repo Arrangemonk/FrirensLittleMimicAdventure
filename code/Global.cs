@@ -13,6 +13,7 @@ public enum Gamestate
     Result,
     Slotmachine,
     End,
+    EndFern,
     Quit
 }
 

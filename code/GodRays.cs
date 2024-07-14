@@ -10,7 +10,8 @@ public partial class GodRays : Node3D
 		signals = Global.Signals(this);
 		rays = GetNode<MeshInstance3D>("rays");
 		signals.StateChanged += OnStateChanged;
-		rays.Visible = true;
+        OnStateChanged();
+        rays.Visible = true;
 	}
 	private void OnStateChanged()
 	{

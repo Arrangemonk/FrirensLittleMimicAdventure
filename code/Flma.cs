@@ -15,6 +15,7 @@ public enum Audio
     Shuffle,
     Impact,
     BackgroundMusic,
+    GameOver,
 }
 
 public partial class Flma : AudioStreamPlayer
@@ -26,8 +27,9 @@ public partial class Flma : AudioStreamPlayer
 	{
 		signals = Global.Signals(this);
 		signals.PlaySound += Playsound;
+        signals.StopSound += Stopsound;
 
-		sounds.Add(Audio.Plop, GetNode<AudioStreamPlayer>(nameof(Audio.Plop)));
+        sounds.Add(Audio.Plop, GetNode<AudioStreamPlayer>(nameof(Audio.Plop)));
 		sounds.Add(Audio.Woosh, GetNode<AudioStreamPlayer>(nameof(Audio.Woosh)));
 		sounds.Add(Audio.Flma, this);
 		sounds.Add(Audio.Start, GetNode<AudioStreamPlayer>(nameof(Audio.Start)));
@@ -36,6 +38,7 @@ public partial class Flma : AudioStreamPlayer
 		sounds.Add(Audio.Shuffle, GetNode<AudioStreamPlayer>(nameof(Audio.Shuffle)));
 		sounds.Add(Audio.Impact, GetNode<AudioStreamPlayer>(nameof(Audio.Impact)));
 		sounds.Add(Audio.BackgroundMusic, GetNode<AudioStreamPlayer>(nameof(Audio.BackgroundMusic)));
+        sounds.Add(Audio.GameOver, GetNode<AudioStreamPlayer>(nameof(Audio.GameOver)));
 
         Global.CreateOneshotTimer(this, 2.5, () => {
             signals.EmitSignal(nameof(CustomSignals.PlaySound), (int)Audio.BackgroundMusic);
@@ -48,5 +51,11 @@ public partial class Flma : AudioStreamPlayer
 	{
         sounds[(Audio)sound].Play();
 	}
+
+
+    private void Stopsound(int sound)
+    {
+        sounds[(Audio)sound].Stop();
+    }
 
 }

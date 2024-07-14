@@ -13,6 +13,9 @@ public partial class CustomSignals : Node
     public delegate void PlaySoundEventHandler(int sound);
 
     [Signal]
+    public delegate void StopSoundEventHandler(int sound);
+
+    [Signal]
     public delegate void AmountChecksChangedEventHandler();
 
     [Signal]

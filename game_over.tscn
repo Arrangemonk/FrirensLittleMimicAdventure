@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://b8xnn7asipyn3"]
+
+[ext_resource type="Texture2D" uid="uid://47jxnj45qdwp" path="res://images/GameOverText.png" id="1_wm2m4"]
+[ext_resource type="Texture2D" uid="uid://wy4kiu0qohdd" path="res://images/friren mimic.png" id="2_4gnsx"]
+[ext_resource type="Script" path="res://code/FrirenMimic.cs" id="3_tabm3"]
+[ext_resource type="Texture2D" uid="uid://crn5lbtggnpyp" path="res://images/fern mimic.png" id="4_ss2wq"]
+[ext_resource type="Script" path="res://code/FernMimic.cs" id="5_x3tui"]
+[ext_resource type="Texture2D" uid="uid://mbvrhky03bxt" path="res://images/stark mimic.png" id="6_6hugj"]
+[ext_resource type="Script" path="res://code/StarkMimic.cs" id="7_ikh82"]
+
+[node name="GameOver" type="Node2D"]
+scale = Vector2(0.5, 0.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -508.0
+offset_top = -470.0
+offset_right = 508.0
+offset_bottom = 470.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_wm2m4")
+stretch_mode = 3
+
+[node name="Friren Mimic" type="TextureRect" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("2_4gnsx")
+expand_mode = 5
+script = ExtResource("3_tabm3")
+
+[node name="Fern Mimic" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_ss2wq")
+expand_mode = 5
+script = ExtResource("5_x3tui")
+
+[node name="Stark Mimic" type="TextureRect" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("6_6hugj")
+expand_mode = 5
+script = ExtResource("7_ikh82")

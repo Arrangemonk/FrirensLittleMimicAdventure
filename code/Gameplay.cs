@@ -74,7 +74,8 @@ public override void _Ready()
 
 		Global.CameraPosition = new Vector3(0.0f,1.5f,6.0f);
 		Global.CameraTarget = new Vector3(0.0f,5.0f,0.0f);
-	}
+        signals.EmitSignal(nameof(CustomSignals.StopSound), (int)Audio.GameOver);
+}
 
 	private void HandycapChanged()
 	{

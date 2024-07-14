@@ -23,7 +23,7 @@ public partial class GameOverFern : Sprite2D
 
     private void StateChanged()
     {
-        Visible = Global.State == Gamestate.End;
+        Visible = Global.State == Gamestate.EndFern;
     }
 
 

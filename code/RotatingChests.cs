@@ -156,6 +156,7 @@ public partial class RotatingChests : MultiMeshInstance3D
     }
     private void SetupShuffle()
     {
+        signals.EmitSignal(nameof(CustomSignals.StopSound), (int)Audio.Flma);
         speed = Global.Speed;
         shuffles = Global.Shuffles;
         currentshuffle = 0;
@@ -375,6 +376,7 @@ public partial class RotatingChests : MultiMeshInstance3D
             mimistarting = false;
             Global.Fadestate = Fadestate.FadeOut;
             Global.TargetState = Gamestate.End;
+            signals.EmitSignal(nameof(CustomSignals.PlaySound), (int)Audio.GameOver);
         }
 
     }
