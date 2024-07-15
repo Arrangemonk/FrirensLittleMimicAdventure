@@ -1,0 +1,75 @@
+FRIERENS LITTLE MIMIC ADVENTURE
+
+VISUAL DESIGN
+
+Kurohina
+Yukiiro Alice
+Arrangemonk
+using: Night Club - "Die in the Disco" (Official Animated Video) - Dance animation
+
+FONT DESIGN
+
+EB Garamond: https://fonts.google.com/specimen/EB+Garamond
+www.calligraphr.com
+Arrangemonk
+
+3D DESIGN
+
+Arrangemonk
+
+TEXTURE DESIGN
+
+Arrangemonk
+Using https://texture.ninja/
+
+CONCEPT AND PLANNING
+
+Kurohina
+Arrangemonk
+
+CODE
+
+Arrangemonk
+https://godotengine.org/
+https://code.visualstudio.com/
+
+AUDIO
+
+kamala laugh slow verb.aif by JohnLaVine333 -- https://freesound.org/s/624495/ -- License: Creative Commons 0
+Water Drops in a Cave by erlipresidente -- https://freesound.org/s/415885/ -- License: Attribution 4.0
+cave_amb.wav by Zixem -- https://freesound.org/s/69391/ -- License: Creative Commons 0
+Water Dripping in Cave.wav by Sclolex -- https://freesound.org/s/177958/ -- License: Creative Commons 0
+quick woosh by florianreichelt -- https://freesound.org/s/683101/ -- License: Creative Commons 0
+Light and Heavy Woosh by JonasTisell -- https://freesound.org/s/417766/ -- License: Creative Commons 0
+cracksmackwhackdead.aiff by bevibeldesign -- https://freesound.org/s/315914/ -- License: Creative Commons 0
+whack01.mp3 by Qat -- https://freesound.org/s/114682/ -- License: Creative Commons 0
+Door-ThudWhamWhack by Hitrison -- https://freesound.org/s/198868/ -- License: Attribution 4.0
+dismiss_card.mp3 by eggdeng -- https://freesound.org/s/502660/ -- License: Creative Commons 0
+Chest Opening.wav by spookymodem -- https://freesound.org/s/202092/ -- License: Creative Commons 0
+SFXWoodenObjectOpen.wav by WakuWakuWakuWaku -- https://freesound.org/s/422975/ -- License: Creative Commons 0
+Congrats by Fupicat -- https://freesound.org/s/607207/ -- License: Creative Commons 0
+Motor whirs then clicks and chimes by bassmosphere -- https://freesound.org/s/384699/ -- License: Creative Commons 0
+Clockwork motor by robindouglasjohnson -- https://freesound.org/s/698991/ -- License: Creative Commons 0
+Creakier door handle opening and closing by XavizardKnight -- https://freesound.org/s/737753/ -- License: Creative Commons 0
+Lever_Small_On_Off.wav by LamaMakesMusic -- https://freesound.org/s/403560/ -- License: Creative Commons 0
+lever.wav by Krokulator -- https://freesound.org/s/696746/ -- License: Creative Commons 0
+Clank1.wav by BMacZero -- https://freesound.org/s/94127/ -- License: Creative Commons 0
+LeverCrank.wav by Harrisando -- https://freesound.org/s/466207/ -- License: Creative Commons 0
+UI Cute Select Major 6th by plasterbrain -- https://freesound.org/s/396193/ -- License: Creative Commons 0
+Game Start by plasterbrain -- https://freesound.org/s/243020/ -- License: Creative Commons 0
+Woosh_Low_Short_01.wav by moogy73 -- https://freesound.org/s/425704/ -- License: Creative Commons 0
+Piano Hits Mallet.ogg by patchen -- https://freesound.org/s/8932/ -- License: Attribution 4.0
+Synthetic Bell.wav by tec_studio -- https://freesound.org/s/367705/ -- License: Creative Commons 0
+harmony_mau5y_F#m_128.wav by harrisonlace -- https://freesound.org/s/657922/ -- License: Creative Commons 0
+Electronic Kick Drum #3 by IanStarGem -- https://freesound.org/s/271079/ -- License: Creative Commons 0
+Melody Loop Mix 128 bpm.mp3 by Vannipat -- https://freesound.org/s/679359/ -- License: Creative Commons 0
+
+SPECIAL THANKS
+simonschreibt - helping tweak the bouncy Chests
+birb - suggesting a soulslike Hud
+bake those beans - for giving useful Feedback
+
+
+This is an unofficial parody Game based onFrieren - Beyond Journey's End
+
+CC-BY-NC Alice Project 2024

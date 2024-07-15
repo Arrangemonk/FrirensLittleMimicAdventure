@@ -12,6 +12,8 @@ far = 30.0
 [node name="ScrollingCredits" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
 visible = false
+billboard = 1
+texture_filter = 5
 modulate = Color(0.817937, 0.346168, 0.20965, 1)
 outline_modulate = Color(1, 1, 1, 1)
 text = "TEXT"

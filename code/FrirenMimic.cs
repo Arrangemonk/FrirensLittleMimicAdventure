@@ -8,6 +8,7 @@ public partial class FrirenMimic : TextureRect
     {
         signals = Global.Signals(this);
         signals.PlayerChanged += PlayerChanged;
+        signals.StateChanged += PlayerChanged;
         PlayerChanged();
     }
 

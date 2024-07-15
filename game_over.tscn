@@ -30,7 +30,6 @@ texture = ExtResource("1_wm2m4")
 stretch_mode = 3
 
 [node name="Friren Mimic" type="TextureRect" parent="VBoxContainer"]
-visible = false
 layout_mode = 2
 texture = ExtResource("2_4gnsx")
 expand_mode = 5
@@ -43,7 +42,6 @@ expand_mode = 5
 script = ExtResource("5_x3tui")
 
 [node name="Stark Mimic" type="TextureRect" parent="VBoxContainer"]
-visible = false
 layout_mode = 2
 texture = ExtResource("6_6hugj")
 expand_mode = 5
