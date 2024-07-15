@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://5n40hada8s1j"]
+
+[ext_resource type="FontFile" uid="uid://d3cdq46ure4mu" path="res://Fonts/Choppedgaramond-Regular.ttf" id="1_8kldc"]
+[ext_resource type="Script" path="res://code/ScrollingCredits.cs" id="1_hbhiu"]
+
+[node name="CreditsRoll" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.997939, 0.0641666, 0, -0.0641666, 0.997939, 0, 0, 20)
+far = 30.0
+
+[node name="ScrollingCredits" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+visible = false
+modulate = Color(0.817937, 0.346168, 0.20965, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "TEXT"
+font = ExtResource("1_8kldc")
+font_size = 128
+outline_size = 5
+script = ExtResource("1_hbhiu")

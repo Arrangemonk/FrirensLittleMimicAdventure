@@ -84,4 +84,6 @@ textures/vram_compression/import_etc2_astc=true
 textures/default_filters/use_nearest_mipmap_filter=true
 textures/default_filters/anisotropic_filtering_level=0
 scaling_3d/mode=1
+anti_aliasing/quality/msaa_2d=1
+anti_aliasing/quality/msaa_3d=1
 anti_aliasing/quality/screen_space_aa=1

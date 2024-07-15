@@ -13,6 +13,6 @@ public partial class FernMimic : TextureRect
 
     private void PlayerChanged()
     {
-        Visible = Global.Player == Player.Fern;
+        Visible = Global.Player == Player.Fern && Global.State == Gamestate.End;
     }
 }

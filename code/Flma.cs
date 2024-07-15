@@ -16,6 +16,7 @@ public enum Audio
     Impact,
     BackgroundMusic,
     GameOver,
+    Angry,
 }
 
 public partial class Flma : AudioStreamPlayer
@@ -39,6 +40,7 @@ public partial class Flma : AudioStreamPlayer
 		sounds.Add(Audio.Impact, GetNode<AudioStreamPlayer>(nameof(Audio.Impact)));
 		sounds.Add(Audio.BackgroundMusic, GetNode<AudioStreamPlayer>(nameof(Audio.BackgroundMusic)));
         sounds.Add(Audio.GameOver, GetNode<AudioStreamPlayer>(nameof(Audio.GameOver)));
+        sounds.Add(Audio.Angry, GetNode<AudioStreamPlayer>(nameof(Audio.Angry)));
 
         Global.CreateOneshotTimer(this, 2.5, () => {
             signals.EmitSignal(nameof(CustomSignals.PlaySound), (int)Audio.BackgroundMusic);

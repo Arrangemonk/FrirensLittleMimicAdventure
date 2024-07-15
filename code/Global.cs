@@ -56,6 +56,9 @@ public partial class Global : Node
         node.AddChild(timer);
         timer.Start();
     }
+
+    public static Timer FernTimer { get; set; }
+
     public static Gamestate State { get; set; } = Gamestate.Title;
     public static Gamestate TargetState { get; set; } = Gamestate.Title;
     public static Fadestate Fadestate { get; set; } = Fadestate.None;
@@ -71,6 +74,7 @@ public partial class Global : Node
     public static int SlotResult { get; set; }
     public static Vector3 CameraPosition { get; set; }
     public static Vector3 CameraTarget { get; set; }
+    public static int Highscore { get; set; }
 
     public static float Unease(float from, float to, float weight)
     {

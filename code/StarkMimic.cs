@@ -13,6 +13,6 @@ public partial class StarkMimic : TextureRect
 
     private void PlayerChanged()
     {
-        Visible = Global.Player == Player.Stark;
+        Visible = Global.Player == Player.Stark && Global.State == Gamestate.End;
     }
 }

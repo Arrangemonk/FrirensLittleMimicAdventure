@@ -13,6 +13,6 @@ public partial class FrirenMimic : TextureRect
 
     private void PlayerChanged()
     {
-        Visible = Global.Player == Player.Friren;
+        Visible = Global.Player == Player.Friren && Global.State == Gamestate.End;
     }
 }

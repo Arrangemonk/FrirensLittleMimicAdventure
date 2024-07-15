@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 
 public partial class GameOverFern : Sprite2D
 {
@@ -11,7 +13,25 @@ public partial class GameOverFern : Sprite2D
         signals.StateChanged += StateChanged;
         OnViewportResize();
         StateChanged();
-	}
+
+        Global.FernTimer = new Timer
+        {
+            WaitTime = 20,
+            OneShot = true,
+        };
+        Global.FernTimer.Timeout += Timeout;
+        AddChild(Global.FernTimer);
+        Global.FernTimer.Start();
+}
+
+    private void Timeout()
+    {
+        if (Global.State != Gamestate.Revolver)
+            return;
+        Global.Fadestate = Fadestate.FadeOut;
+        Global.TargetState = Gamestate.EndFern;
+        signals.EmitSignal(nameof(CustomSignals.PlaySound), (int)Audio.Angry);
+    }
 
     private void OnViewportResize()
     {
@@ -24,6 +44,11 @@ public partial class GameOverFern : Sprite2D
     private void StateChanged()
     {
         Visible = Global.State == Gamestate.EndFern;
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        Global.FernTimer.Start();
     }
 
 
